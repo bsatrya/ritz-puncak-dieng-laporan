@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laporan THE RITZ Puncak Dieng</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f172a">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" href="icons/icon-192.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>body{font-family:'Inter',sans-serif}</style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+<div class="max-w-2xl mx-auto">
+  <header class="bg-slate-900 text-white p-4 sticky top-0 z-20 flex items-center gap-3 shadow">
+    <img src="icons/icon-192.png" class="w-10 h-10 bg-white rounded-lg p-1">
+    <div><h1 class="font-bold leading-none">THE RITZ</h1><p class="text-xs text-slate-300">Puncak Dieng • Laporan Harian</p></div>
+    <div class="ml-auto text-xs bg-white/10 px-2 py-1 rounded">PWA</div>
+  </header>
+  <div class="p-4 space-y-4">
+    <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm flex gap-2"><span>💡</span><span><b>Install di HP:</b> Chrome > ⋮ > Tambahkan ke Layar Utama. Foto tetap offline.</span></div>
+    <div class="bg-white rounded-xl p-4 shadow-sm border">
+      <label class="text-xs font-semibold text-slate-500">PROJECT</label>
+      <input id="projectName" value="THE RITZ Puncak Dieng" class="w-full font-bold text-slate-800 mt-1 border rounded-lg px-3 py-2">
+      <div class="grid grid-cols-2 gap-3 mt-3">
+        <div><label class="text-xs font-semibold text-slate-500">TANGGAL</label><input id="tanggal" type="date" class="w-full mt-1 border rounded-lg px-3 py-2"></div>
+        <div><label class="text-xs font-semibold text-slate-500">SHIFT</label><select id="shift" class="w-full mt-1 border rounded-lg px-3 py-2"><option value="pagi">Pagi 08:00</option><option value="sore">Sore 16:00 (Full)</option></select></div>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl p-4 shadow-sm border">
+      <h2 class="font-bold mb-3">Tambah Pekerjaan + Foto</h2>
+      <div class="grid grid-cols-2 gap-3">
+        <select id="kavling" class="border rounded-lg px-3 py-2.5"><option>Kav.3</option><option>Kav.4</option><option>Kav.12a</option><option>Kav.14a</option><option>Kav.15a</option><option>Kav.19</option><option>Custom</option></select>
+        <select id="lantai" class="border rounded-lg px-3 py-2.5"><option value="LG">LG</option><option value="LT1">LT.1</option><option value="LT2">LT.2</option><option value="RENCANA">Rencana Besok</option></select>
+      </div>
+      <input id="customKav" placeholder="Nama kavling custom" class="hidden mt-3 w-full border rounded-lg px-3 py-2">
+      <textarea id="pekerjaan" placeholder="Contoh: Plester area tangga + Acian dinding" class="w-full mt-3 border rounded-lg px-3 py-2 h-20"></textarea>
+
+      <!-- FOTO INPUT BARU -->
+      <div class="mt-3 bg-slate-50 border border-dashed border-slate-300 rounded-xl p-3">
+        <label class="text-xs font-semibold text-slate-600 flex justify-between">📸 Foto Kavling ini <span class="text-[10px] text-slate-400 font-normal">max 5 foto, auto-kompres</span></label>
+        <input id="fotoInput" type="file" accept="image/*" multiple capture="environment" class="mt-2 w-full text-xs file:mr-3 file:py-2 file:px-3 file:rounded-full file:border-0 file:bg-slate-900 file:text-white file:text-xs">
+        <div id="fotoPreview" class="flex flex-wrap gap-2 mt-3"></div>
+      </div>
+
+      <div class="mt-3">
+        <div class="text-xs font-semibold text-slate-500 mb-2">⚡ Pintasan Cepat: tap untuk isi (otomatis +)</div>
+        <div class="space-y-2.5">
+          <div class="flex flex-wrap gap-2 items-center">
+            <span class="text-[11px] text-slate-400 w-12">Dinding:</span>
+            <button onclick="addTemplate('Pasang Bata')" class="px-3 py-1.5 bg-slate-100 hover:bg-amber-100 rounded-full text-xs border">Pasang Bata</button>
+            <button onclick="addTemplate('Plester Dinding')" class="px-3 py-1.5 bg-slate-100 hover:bg-amber-100 rounded-full text-xs border">Plester</button>
+            <button onclick="addTemplate('Aci Dinding')" class="px-3 py-1.5 bg-slate-100 hover:bg-amber-100 rounded-full text-xs border">Aci</button>
+            <button onclick="addTemplate('Pasang Keramik Dinding')" class="px-3 py-1.5 bg-slate-100 hover:bg-amber-100 rounded-full text-xs border">Keramik Dinding</button>
+          </div>
+          <div class="flex flex-wrap gap-2 items-center">
+            <span class="text-[11px] text-slate-400 w-12">Lantai:</span>
+            <button onclick="addTemplate('Pasang Granit Lantai')" class="px-3 py-1.5 bg-slate-100 hover:bg-amber-100 rounded-full text-xs border">Granit Lantai</button>
+            <button onclick="addTemplate('Pasang Granit Kamar Mandi')" class="px-3 py-1.5 bg-slate-100 hover:bg-amber-100 rounded-full text-xs border">Granit KM</button>
+            <button onclick="addTemplate('Pasang Keramik Lantai')" class="px-3 py-1.5 bg-slate-100 hover:bg-amber-100 rounded-full text-xs border">Keramik Lantai</button>
+          </div>
+          <div class="flex flex-wrap gap-2 items-center">
+            <span class="text-[11px] text-slate-400 w-12">Struktur:</span>
+            <button onclick="addTemplate('Cor Dak')" class="px-3 py-1.5 bg-slate-100 hover:bg-amber-100 rounded-full text-xs border">Cor Dak</button>
+            <button onclick="addTemplate('Pembesian')" class="px-3 py-1.5 bg-slate-100 hover:bg-amber-100 rounded-full text-xs border">Pembesian</button>
+            <button onclick="addTemplate('Waterproofing')" class="px-3 py-1.5 bg-slate-100 hover:bg-amber-100 rounded-full text-xs border">Waterproofing</button>
+            <button onclick="addTemplate('Bekisting')" class="px-3 py-1.5 bg-slate-100 hover:bg-amber-100 rounded-full text-xs border">Bekisting</button>
+          </div>
+        </div>
+      </div>
+      <div class="flex gap-2 mt-4"><button id="btnTambah" class="flex-1 bg-slate-900 text-white rounded-lg py-3 font-semibold">+ Tambah ke Hari Ini</button><button id="btnNoJob" class="px-4 border rounded-lg">No Job</button></div>
+    </div>
+    <div class="bg-white rounded-xl p-4 shadow-sm border">
+      <div class="flex justify-between items-center mb-3"><h2 class="font-bold">Laporan Hari Ini</h2><button id="btnReset" class="text-xs text-red-500">Reset Hari Ini</button></div>
+      <div id="listLaporan" class="space-y-3 text-sm"></div>
+    </div>
+    <div class="bg-white rounded-xl p-4 shadow-sm border">
+      <h2 class="font-bold mb-2">Preview WA</h2>
+      <pre id="preview" class="bg-slate-50 border rounded-lg p-3 text-xs whitespace-pre-wrap font-mono min-h-[200px]"></pre>
+      <div class="grid grid-cols-2 gap-2 mt-3"><button id="btnWAPagi" class="bg-green-600 text-white rounded-lg py-3 font-semibold">WA Pagi 08:00</button><button id="btnWASore" class="bg-slate-900 text-white rounded-lg py-3 font-semibold">WA Sore 16:00 Full</button></div>
+      <div class="grid grid-cols-2 gap-2 mt-2"><button id="btnCopy" class="border rounded-lg py-2.5 text-sm">📋 Salin Teks</button><button id="btnDownloadFoto" class="border rounded-lg py-2.5 text-sm">🖼️ Download Semua Foto</button></div>
+      <p class="text-[11px] text-slate-400 mt-2">WA tidak bisa kirim foto otomatis. Setelah WA teks, kirim foto manual dari gallery di atas atau pakai tombol Download.</p>
+    </div>
+  </div>
+</div>
+<script src="app.js"></script>
+<script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');</script>
+</body>
+</html>
